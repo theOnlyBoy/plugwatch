@@ -25,18 +25,18 @@ describe('truncateLabel', () => {
 // These pin the user-visible copy to what README/power-state.md document, so a
 // wording change has to be made deliberately in both places.
 describe('notification copy', () => {
-	it('titles a transition by direction', () => {
-		expect(notificationTitle('ac', 'transition')).toBe('Mac -> AC power')
-		expect(notificationTitle('battery', 'transition')).toBe('Mac -> battery power')
+	it('titles by power state, in one shape for every prompt', () => {
+		expect(notificationTitle('ac')).toBe('Mac → AC power')
+		expect(notificationTitle('battery')).toBe('Mac → battery power')
 	})
 
-	it('titles a startup without claiming a switch happened', () => {
-		expect(notificationTitle('ac', 'startup')).toBe('Mac is on AC power')
-		expect(notificationTitle('battery', 'startup')).toBe('Mac is on battery power')
+	it('uses a real arrow, not ASCII', () => {
+		expect(notificationTitle('ac')).toContain('→')
+		expect(notificationTitle('ac')).not.toContain('->')
 	})
 
 	it('falls back to a neutral title when power could not be read', () => {
-		expect(notificationTitle(null, 'transition')).toBe('Power status')
+		expect(notificationTitle(null)).toBe('Power status')
 	})
 
 	it('uses one button, worded for the action', () => {

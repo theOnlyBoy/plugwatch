@@ -39,7 +39,7 @@
 		"url": "git+https://github.com/theOnlyBoy/plugwatch.git"
 	},
 	"bin": {
-		"plugwatch": "./dist/main.js"
+		"plugwatch": "dist/main.js"
 	},
 	"files": [
 		"dist",

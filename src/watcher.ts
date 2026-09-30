@@ -103,21 +103,25 @@ export function bodyList(targets: Target[]): string {
 	return lines.join('\n')
 }
 
-/** What prompted a notification, which only affects its wording. */
-type NotifyKind = 'startup' | 'transition'
-
 function delayMsFor(config: Config, state: PowerState): number {
 	return (state === 'ac' ? config.delay.acSec : config.delay.batterySec) * 1000
 }
 
 /**
- * Notification title.
+ * Notification title: the power status, in one shape for every prompt.
+ *
+ * There is no startup/transition split — an earlier `Mac is on …` variant for
+ * startup and wake was dropped so every notification reads identically.
  *
  * @param state - The power state, or `null` when it could not be read.
- * @param kind - `transition` after a power change, `startup` when the service
- *   comes up (or wakes), where "switched" would be wrong.
- * @returns e.g. `Mac switched to AC power`, `Mac is on battery power`.
+ * @returns e.g. `Mac → AC power`, `Mac → battery power`, `Power status`.
  */
+export function notificationTitle(state: PowerState | null): string {
+	if (state === null) return 'Power status'
+	const status = state === 'ac' ? 'AC power' : 'battery power'
+	return 'Mac → ' + status
+}
+
 /**
  * Label for the single confirmation button.
  *
@@ -126,12 +130,6 @@ function delayMsFor(config: Config, state: PowerState): number {
  */
 export function buttonTitle(action: 'start' | 'stop'): string {
 	return action === 'start' ? 'Confirm launch' : 'Stop'
-}
-
-export function notificationTitle(state: PowerState | null, kind: NotifyKind): string {
-	if (state === null) return 'Power status'
-	const status = state === 'ac' ? 'AC power' : 'battery power'
-	return (kind === 'startup' ? 'Mac is on ' : 'Mac -> ') + status
 }
 
 /**
@@ -261,7 +259,6 @@ async function handleTransition(
 	config: Config,
 	next: PowerState,
 	opts: WatcherOptions,
-	kind: NotifyKind = 'transition',
 ): Promise<TargetResult[] | null> {
 	const targets = enabledTargets(config)
 	if (targets.length === 0) {
@@ -298,7 +295,7 @@ async function handleTransition(
 
 		// Title describes the power change, the body lists the affected apps one per
 		// line, and the single button says what it will do.
-		const outcome = await prompt(notificationTitle(next, kind), bodyList(targets), actions)
+		const outcome = await prompt(notificationTitle(next), bodyList(targets), actions)
 		if (outcome.kind !== 'action') {
 			log(`no confirmation (${outcome.kind}) — skipping ${action}`)
 			return null
@@ -373,10 +370,10 @@ export async function runWatcher(config: Config, opts: WatcherOptions = {}): Pro
 	 */
 	let decisionToken = 0
 
-	const decide = (settled: PowerState, kind: NotifyKind = 'transition') => {
+	const decide = (settled: PowerState) => {
 		const token = ++decisionToken
 		deciding = true
-		void handleTransition(config, settled, opts, kind)
+		void handleTransition(config, settled, opts)
 			.then(() => {
 				if (token !== decisionToken) return // superseded by a newer state
 				// Re-arm **only** for a genuine move while we were asking. Re-arming on
@@ -395,7 +392,7 @@ export async function runWatcher(config: Config, opts: WatcherOptions = {}): Pro
 	// Coming up asks the same question the current power state implies — same
 	// copy, same single button as a transition prompt. Fire-and-forget: the poll
 	// loop must keep watching power while the user decides.
-	if (shouldAsk(config, opts) && initial !== null) decide(initial, 'startup')
+	if (shouldAsk(config, opts) && initial !== null) decide(initial)
 
 	let lastTick = Date.now()
 
@@ -413,7 +410,7 @@ export async function runWatcher(config: Config, opts: WatcherOptions = {}): Pro
 			log(`resumed after a ${Math.round(gap / 1000)}s gap (system sleep) — re-evaluating`)
 			candidate = null
 			if (gap >= WAKE_CONTROL_MIN_GAP_MS && shouldAsk(config, opts) && current !== null) {
-				decide(current, 'startup')
+				decide(current)
 			}
 		}
 

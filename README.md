@@ -37,7 +37,12 @@ Anything with a start command and a stop command works — PlugWatch is not AI-s
 | Game downloads and updates (Steam)            | tens of GB of disk and network            |
 | Transcription jobs (Whisper)                  | long CPU bursts after recording           |
 
-**Behaviour**
+---
+
+<img src="assets/screenshots/screenshot-01.png" width="379" height="131" alt="PlugWatch screenshot-01" />
+<img src="assets/screenshots/screenshot-02.png" width="379" height="131" alt="PlugWatch screenshot-02" />
+
+## Behaviour
 
 - 🪫 **Hysteresis** — a brief unplug/re-plug cannot thrash: the new state must _hold_ for the
   configured delay before anything is offered.
@@ -46,7 +51,7 @@ Anything with a start command and a stop command works — PlugWatch is not AI-s
   instead of assuming. Dismissing means "not this time" and won't re-ask until power changes again.
 - 🕗 **activeHours** — outside the window it never auto-starts (stopping on battery still applies).
 - 🎛 **Same prompt at startup** — coming up asks the same question the current power state implies,
-  so every notification has one shape: `Mac is on AC power` (or `Mac -> battery power`), the affected
+  so every notification has one shape: `Mac → AC power` (or `Mac → battery power`), the affected
   apps as a bulleted list, and a single button — `Confirm launch` or `Stop`.
 - 🔔 **Stop notice** — an instant notification when the service stops.
 - 🤫 **`mode: auto`** — skip the asking entirely: act silently on each transition, with no prompts.
