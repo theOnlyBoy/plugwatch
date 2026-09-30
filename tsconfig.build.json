@@ -1,0 +1,17 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"outDir": "./dist",
+		"rootDir": "./src",
+		// No .d.ts or source maps: this package ships a CLI, not a library, so
+		// nothing consumes types and stack maps would only bloat the tarball.
+		"declaration": false,
+		"declarationMap": false,
+		"sourceMap": false,
+		"rewriteRelativeImportExtensions": true,
+		"allowImportingTsExtensions": true
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "dist", "test"]
+}

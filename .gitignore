@@ -1,0 +1,50 @@
+# Secrets — never commit config.json (may hold local paths)
+config.json
+
+# Runtime state & logs
+run/
+
+# Compiled notification helper (built from swift/PlugNotify.swift)
+PlugNotify.app/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# pnpm
+.pnpm-store/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# dotenv files
+.env
+.env.*
+!.env.example
+
+# Temp / session scratch
+.tmp/
+
+# Local AI tooling / agent context (not published)
+.opencode/
+.ai-devkit.json
+docs/ai/
+
+# Build output (generated for publishing)
+dist/

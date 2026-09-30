@@ -1,0 +1,18 @@
+{
+	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "oxc", "vitest", "node"],
+	"ignorePatterns": ["PlugNotify.app", "run", "coverage"],
+	"categories": {
+		"correctness": "error"
+	},
+	"rules": {
+		"typescript/no-unused-vars": "warn"
+	},
+	"env": {
+		"builtin": true,
+		"node": true
+	},
+	"options": {
+		"typeAware": true
+	}
+}

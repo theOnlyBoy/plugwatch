@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Template for the PlugWatch LaunchAgent. `plugwatch install` substitutes
+  __NODE__ / __ENTRY__ / __LOG__ with absolute paths and writes the result to
+  ~/Library/LaunchAgents/.
+
+  launchd expands neither ~ nor $HOME, so every path here must be absolute.
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.plugwatch.agent</string>
+
+	<key>ProgramArguments</key>
+	<array>
+		<string>__NODE__</string>
+		<string>__ENTRY__</string>
+	</array>
+
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+		<!--
+		  Tells the duplicate-instance guard that launchd owns this process, so it
+		  must not refuse to start when another watcher is momentarily present
+		  (KeepAlive would restart it in a loop if it did).
+		-->
+		<key>PLUGWATCH_MANAGED</key>
+		<string>1</string>
+	</dict>
+
+	<!-- Start at login and keep the watcher alive if it ever exits. -->
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<key>ThrottleInterval</key>
+	<integer>30</integer>
+
+	<key>ProcessType</key>
+	<string>Background</string>
+
+	<key>StandardOutPath</key>
+	<string>__LOG__</string>
+	<key>StandardErrorPath</key>
+	<string>__LOG__</string>
+</dict>
+</plist>

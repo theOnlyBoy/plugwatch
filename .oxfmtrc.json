@@ -1,0 +1,11 @@
+{
+	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxfmt/configuration_schema.json",
+	"ignorePatterns": ["PlugNotify.app", "run", "coverage", "dist"],
+	"semi": false,
+	"tabWidth": 2,
+	"useTabs": true,
+	"printWidth": 120,
+	"singleQuote": true,
+	"trailingComma": "all",
+	"insertFinalNewline": true
+}

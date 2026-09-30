@@ -1,0 +1,92 @@
+{
+	"name": "plugwatch",
+	"version": "0.1.0",
+	"description": "macOS power-gating service — starts and stops local apps on AC/battery transitions, asking first via an actionable notification.",
+	"keywords": [
+		"ac-power",
+		"apple-silicon",
+		"battery",
+		"cli",
+		"daemon",
+		"energy",
+		"fans",
+		"gpu",
+		"inference",
+		"launchagent",
+		"launchd",
+		"llm",
+		"lm-studio",
+		"local-llm",
+		"macos",
+		"notification",
+		"ollama",
+		"power-management",
+		"powersave",
+		"usernotifications"
+	],
+	"homepage": "https://github.com/theOnlyBoy/plugwatch",
+	"bugs": {
+		"url": "https://github.com/theOnlyBoy/plugwatch/issues"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Nik S.",
+		"email": "nikoladious@proton.me",
+		"url": "https://github.com/theOnlyBoy"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/theOnlyBoy/plugwatch.git"
+	},
+	"bin": {
+		"plugwatch": "./dist/main.js"
+	},
+	"files": [
+		"dist",
+		"swift",
+		"scripts",
+		"service",
+		"assets/icon.png",
+		"config.example.json",
+		"README.md",
+		"LICENSE"
+	],
+	"os": [
+		"darwin"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "rm -rf dist && tsc -p tsconfig.build.json",
+		"clean": "rm -rf dist",
+		"dev": "node src/main.ts",
+		"start": "node src/main.ts start",
+		"stop": "node src/main.ts stop",
+		"restart": "node src/main.ts restart",
+		"status": "node src/main.ts status",
+		"logs": "node src/main.ts logs",
+		"typecheck": "tsc --noEmit",
+		"lint": "oxlint --type-aware --type-check src/ test/",
+		"lint:fix": "oxlint --type-aware --type-check --fix src/ test/",
+		"format:style": "oxfmt .",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"build:notify": "bash scripts/build-notify.sh",
+		"prepublishOnly": "npm run lint && npm run typecheck && npm run test && npm run build"
+	},
+	"devDependencies": {
+		"@types/node": "^26.1.2",
+		"oxfmt": "^0.62.0",
+		"oxlint": "^1.77.0",
+		"oxlint-tsgolint": "^7.0.2001",
+		"typescript": "^5.9.3",
+		"vitest": "^4.1.10"
+	},
+	"engines": {
+		"node": ">= 22"
+	},
+	"packageManager": "pnpm@9.15.0"
+}

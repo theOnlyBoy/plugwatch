@@ -1,0 +1,47 @@
+# Secrets & keys
+.env*
+!.env.example
+*.pem
+*.key
+*.crt
+.secrets/
+secrets.json
+config.json
+
+# Node
+dependencies/
+node_modules/
+.pnpm-store/
+dist/
+build/
+out/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# Logs / tmp
+*.log
+logs
+tmp/
+temp/
+*.tmp
+.tmp/
+run/
+
+# Tests
+playwright-report/
+cypress/
+test-results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Databases
+*.db
+*.sqlite

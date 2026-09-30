@@ -1,0 +1,42 @@
+{
+	"mode": "ask",
+	"pollSec": 60,
+	"notifications": {
+		"system": true
+	},
+	"delay": {
+		"acSec": 120,
+		"batterySec": 60
+	},
+	"activeHours": {
+		"start": 7,
+		"end": 23
+	},
+	"targets": [
+		{
+			"id": "lmstudio",
+			"label": "LM Studio Server",
+			"start": [
+				["lms", "server", "start"],
+				[
+					"lms",
+					"load",
+					"qwen3-30b-a3b-instruct-2507",
+					"-c",
+					"32768",
+					"--gpu",
+					"max",
+					"--parallel",
+					"1",
+					"--ttl",
+					"900",
+					"-y"
+				]
+			],
+			"stop": [
+				["lms", "unload", "--all"],
+				["lms", "server", "stop"]
+			]
+		}
+	]
+}
